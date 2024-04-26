@@ -27,7 +27,6 @@ app.post("/create-payment-intent", async (req, res) => {
       automatic_payment_methods: {
         enabled: true,
       },
-      confirm: true,
       //receipt_email: req.body.email,
       description: "ShoeStrideAR Shoe Purchase Recipt"
     });
