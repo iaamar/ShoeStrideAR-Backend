@@ -12,7 +12,7 @@ app.get("/hello", (req, res) => {
 
 app.post("/create-payment-intent", async (req, res) => {
   const customer = await stripe.customers.create({
-    email: "amargithub@gmail",
+    email: "amargithub@gmail.com",
   });
   const ephemeralKey = await stripe.ephemeralKeys.create(
     { customer: customer.id },
