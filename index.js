@@ -19,9 +19,7 @@ app.post("/create-payment-intent", async (req, res) => {
       { customer: customer.id },
       { apiVersion: "2020-08-27" }
     );
-    if (isNaN(amount)) {
-      return res.status(400).json({ error: "Amount must be a valid integer" });
-    }
+
     const paymentIntent = await stripe.paymentIntents.create({
      
       amount: parseInt(req.body.amount),
