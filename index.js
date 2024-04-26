@@ -21,7 +21,7 @@ app.post("/create-payment-intent", async (req, res) => {
     );
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: req.body.amount,
+      amount: 215.0,
       currency: "usd",
       customer: customer.id,
       automatic_payment_methods: {
@@ -38,7 +38,7 @@ app.post("/create-payment-intent", async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating payment intent:", error);
-    res.status(500).json({ error: "Failed to create payment intent" });
+    res.status(500).json({ error: "Failed to create payment intent: " + error });
   }
 });
 
