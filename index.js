@@ -11,31 +11,35 @@ app.get("/hello", (req, res) => {
 });
 
 app.post("/create-payment-intent", async (req, res) => {
-  const customer = await stripe.customers.create({
-    email: "amargithub@gmail.com",
-  });
-  const ephemeralKey = await stripe.ephemeralKeys.create(
-    { customer: customer.id },
-    { apiVersion: "2020-08-27" }
-  );
+  try {
+    const customer = await stripe.customers.create({
+      email: "amargithub@gmail.com",
+    });
+    const ephemeralKey = await stripe.ephemeralKeys.create(
+      { customer: customer.id },
+      { apiVersion: "2020-08-27" }
+    );
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: 20,
-    currency: "usd",
-    customer: customer.id,
-    automatic_payment_methods: {
-      enabled: true,
-      
-    },
-  });
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: req.body.amount,
+      currency: "usd",
+      customer: customer.id,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
 
-  res.json({
-    clientSecret: paymentIntent.client_secret,
-    ephemeralKey: ephemeralKey.secret,
-    customerId: customer.id,
-    paymentIntentId: paymentIntent.id,
-    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-  });
+    res.json({
+      clientSecret: paymentIntent.client_secret,
+      ephemeralKey: ephemeralKey.secret,
+      customerId: customer.id,
+      paymentIntentId: paymentIntent.id,
+      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    });
+  } catch (error) {
+    console.error("Error creating payment intent:", error);
+    res.status(500).json({ error: "Failed to create payment intent" });
+  }
 });
 
 app.listen(process.env.PORT, () => {
