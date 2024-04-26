@@ -21,13 +21,15 @@ app.post("/create-payment-intent", async (req, res) => {
     );
 
     const paymentIntent = await stripe.paymentIntents.create({
-     
-      amount: 2222,
+      amount: req.body.amount,
       currency: "usd",
       customer: customer.id,
       automatic_payment_methods: {
         enabled: true,
       },
+      confirm: true,
+      //receipt_email: req.body.email,
+      description: "ShoeStrideAR Shoe Purchase Recipt"
     });
 
     res.json({
